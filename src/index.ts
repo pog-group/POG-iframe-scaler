@@ -54,6 +54,13 @@ app.get("/assets/*", (req: express.Request, res: express.Response): any => {
 
 })
 
+app.get("/test2", (_req,res) => {
+
+    return res.sendFile(path.resolve(__siteRoot + "/test2" + ".html"))
+
+    return;
+})
+
 app.get('/image/:matrixSize/:zone/:inputSize/:outputSize?', (req: express.Request, res: express.Response): any => {
     processCut("image",req,res)
 
