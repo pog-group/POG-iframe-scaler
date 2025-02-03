@@ -82,8 +82,8 @@ function getCoords(width, height, num) {
 const box = document.getElementById("box")
 const vid = document.getElementById("vid")
 
-setInterval(() => {
-
+function fixSize() {
+    
     //let value = `scale(${window.innerWidth / 1920 * 4}) translate(calc(calc(calc(100vw / var(--matrix-x)) + calc(100vw / calc(var(--matrix-x) * 2))) - 0px), calc(405px - 0px))`
     let scale;
     if((window.innerWidth/window.innerHeight) < (Datas["size-x"]/Datas["size-y"])) {
@@ -123,9 +123,15 @@ setInterval(() => {
     console.log("hauteur_unit:",hauteur_unit)
 
     let test = [
-        (largeur/8) *3,
-        (hauteur/8) *3,
+        (largeur / (Datas["matrix-x"] * 2)) + (largeur / Datas["matrix-x"]), // (largeur/8) *3
+        (hauteur / (Datas["matrix-y"] * 2)) + (hauteur / Datas["matrix-y"]), // (hauteur/8) *3
     ]
+/*
+
+
+    4x4 = 4 * 2 et 4*2 = 8   
+    2x2 = 2* -2 et 2*-2 = -4
+*/
 
     let test2 = [
         test[0] - largeur_unit * Datas["selected-x"],
@@ -138,8 +144,11 @@ setInterval(() => {
     
     vid.style.transform = `translate(${test2[0]}px, ${test2[1]}px)`
 
+}
 
-}, 1000)
+window.addEventListener('load', () => {
+    fixSize()
+})
 
 
 </script>
