@@ -39,7 +39,7 @@ app.get('/', (_req: express.Request, res: express.Response): any => {
 });
 
 
-app.get("/assets/*", (req,res): any => {
+app.get("/assets/*", (req: express.Request, res: express.Response): any => {
     
     let _path = path.resolve(__siteRoot + req.path)
     console.log("path:",_path)
@@ -54,11 +54,11 @@ app.get("/assets/*", (req,res): any => {
 
 })
 
-app.get('/image/:matrixSize/:zone/:inputSize/:outputSize?', (req, res): void => {
+app.get('/image/:matrixSize/:zone/:inputSize/:outputSize?', (req: express.Request, res: express.Response): any => {
     processCut("image",req,res)
 
 })
-app.get('/iframe/:matrixSize/:zone/:inputSize/:outputSize?', (req, res): void => {
+app.get('/iframe/:matrixSize/:zone/:inputSize/:outputSize?', (req: express.Request, res: express.Response): any => {
     processCut("iframe",req,res)
 })
 
@@ -188,7 +188,7 @@ function processCut(cutType: "image" | "iframe", req: express.Request, res:expre
 }
 
 
-app.get('*', (_req,res): any => {
+app.get('*', (_req: express.Request, res: express.Response): any => {
     return res.send({
         status: 400,
         message: "Bad request"
