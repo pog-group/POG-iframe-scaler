@@ -87,6 +87,18 @@ function processCut(cutType: "image" | "iframe", req: express.Request, res:expre
                 zone: "{number}",
                 inputSize: "{number}x{number}",
                 outputSize: "{number}x{number}",
+            },
+            queryParams: {
+                url: {
+                    required: true,
+                    type: "URI",
+                    description: "The URL of the iframe to import."
+                },
+                resizeDelay: {
+                    required: false,
+                    type: "number > 0",
+                    description: "Defines if the page should be automatically resized every X ms. 0 for disabled."
+                },
             }
         })
         return;
@@ -103,6 +115,12 @@ function processCut(cutType: "image" | "iframe", req: express.Request, res:expre
     }
     if(regexes.size.test(req.params?.outputSize ?? "") !== true && req.params?.outputSize !== undefined) {
         return sendError("outputSize is invalid")
+    }
+
+    const importedParams: {
+        resizeDelay: number // > 0. If 0, disabled
+    } = {
+        resizeDelay: regexes.number.test(`${req.query.resizeDelay}`) ? parseInt(`${req.query.resizeDelay}`) : 0
     }
 
 
@@ -178,7 +196,8 @@ function processCut(cutType: "image" | "iframe", req: express.Request, res:expre
         "{{matrix.y}}":         imageCutInfos.zone.y,
         "{{inputSize.x}}":      imageCutInfos.inputSize.x,
         "{{inputSize.y}}":      imageCutInfos.inputSize.y,
-        "{{source.url}}":        req.query.url
+        "{{source.url}}":       req.query.url,
+        "{{importedParams}}":   JSON.stringify(importedParams)
     }
 
     for(let key in dict) {

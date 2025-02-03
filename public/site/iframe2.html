@@ -38,6 +38,8 @@ body, html {
 }
 #vid {
     margin:0px;
+    width: var(--size-x);
+    height: var(--size-y);
 }
 
 
@@ -49,14 +51,22 @@ body, html {
 <body>
 
     <div id="box">
-        <!-- <iframe class="vid" src="https://vdo.ninja/?view=2zr28yq&solo&room=aaaerg" allow="autoplay;"></iframe> -->
-        <img id="vid" src="/assets/image_4x4.png">
+        <iframe id="vid" src="{{source.url}}" frameBorder="0"></iframe>
+        <!-- <img id="vid" src="/assets/image_4x4.png"> -->
     </div>
 
     
 </body>
 
 <script>
+
+const _IMPORTED_PARAMS_ = {{importedParams}}
+/*
+{
+    resizeDelay: number // if 0, disabled. milliseconds between resizes
+}
+
+*/
 
 
 
@@ -147,6 +157,15 @@ function fixSize() {
 }
 
 fixSize()
+
+
+
+if(typeof _IMPORTED_PARAMS_.resizeDelay == 'number' && _IMPORTED_PARAMS_.resizeDelay != 0) {
+    setInterval(() => {
+        fixSize()
+    }, _IMPORTED_PARAMS_.resizeDelay)
+}
+
 
 
 </script>
