@@ -6,37 +6,54 @@
 
 body, html {
     margin: 0;
-}
-
-:root {
-    --x: 2;
-    --y: 2;
-    --size-x: 1920px;
-    --size-y: 1080px;
-    --selected-x: 1;
-    --selected-y: 1;
-}
-
-.box {
-    width: calc(var(--size-x) / var(--x));
-    height: calc(var(--size-y) / var(--y));
-    border: 1px solid red;
     overflow: hidden;
 }
 
-.vid {
-    width: var(--size-x);
-    height: var(--size-y);
-    border: 1px solid yellow;
-    transform: translate(-50%, -50%);
-    
-    /* transform: translate(0%, 0%);    1 */
-    /* transform: translate(-50%, 0%);  2 */  calc(calc(-100% / 2) * 1)
-    /* transform: translate(0%, -50%);  3 */
-    /* transform: translate(-50%, -50%);4 */
-
+:root {
+    --matrix-x: 4;
+    --matrix-y: 4;
+    --size-x: 1920px;
+    --size-y: 1080px;
+    --selected-x: 0;
+    --selected-y: 0;
 }
 
+
+/* 1080 -> 1080/4 + 1080/(4*2) */
+
+
+.box {
+    --box-x: calc(calc(100vw / var(--matrix-x)) + calc(100vw / calc(var(--matrix-x) * 2)));
+    margin: 0px;
+    background-color: #FF000099;
+    overflow: hidden;
+    position: relative;
+    transform: scale(4) translate(var(--box-x), 405px);
+    content: var(--box-x);
+}
+.vid {
+    margin:0px;
+    transform: translate(calc(-480px * var(--selected-x)), calc(-270px * var(--selected-y)));
+}
+
+
+
+
+m.x
+m.y
+s.x
+s.y
+
+
+/*
+1: 720px, 405px | (s.x / m.x) + (s.x / (m.x * 2))          (s.y / m.y) + (s.y / (m.y * 2))
+2: 240px, 405px
+3: -240px, 405px
+3: -720px, 405px
+
+
+
+*/
 </style>
 
 </head>
@@ -45,7 +62,7 @@ body, html {
 
     <div class="box">
         <!-- <iframe class="vid" src="https://vdo.ninja/?view=2zr28yq&solo&room=aaaerg" allow="autoplay;"></iframe> -->
-        <img class="vid" src="/assets/image_2x2.png">
+        <img class="vid" src="./assets/image_4x4.png">
     </div>
 
     
