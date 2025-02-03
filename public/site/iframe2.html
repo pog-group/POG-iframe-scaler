@@ -85,7 +85,13 @@ const vid = document.getElementById("vid")
 setInterval(() => {
 
     //let value = `scale(${window.innerWidth / 1920 * 4}) translate(calc(calc(calc(100vw / var(--matrix-x)) + calc(100vw / calc(var(--matrix-x) * 2))) - 0px), calc(405px - 0px))`
-    let scale = (window.innerWidth) / 1920 * 4
+    let scale;
+    if((window.innerWidth/window.innerHeight) < (Datas["size-x"]/Datas["size-y"])) {
+        scale= (window.innerHeight) / Datas["size-y"] * Datas["matrix-y"]
+    } else {
+        scale = (window.innerWidth) / Datas["size-x"] * Datas["matrix-x"]
+    }
+
 
 
     let boxvalue = `scale(${scale}) translate(0px, 0px)`
