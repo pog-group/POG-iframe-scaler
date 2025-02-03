@@ -31,10 +31,6 @@ app.use(express.json());
 app.get('/', (_req: express.Request, res: express.Response): any => {
     console.log(`[server] ${_req.method} ${_req.path}`)
 
-    if(fs.existsSync(path.resolve(__siteRoot + _req.path + ".html"))) {
-        return res.sendFile(path.resolve(__siteRoot + _req.path + ".html"))
-    }
-
     res.send('Home page')
 });
 
@@ -54,9 +50,11 @@ app.get("/assets/*", (req: express.Request, res: express.Response): any => {
 
 })
 
-app.get("/test2", (_req,res) => {
+app.get("/site/*", (_req,res) => {
 
-    return res.sendFile(path.resolve(__siteRoot + "/test2" + ".html"))
+    if(fs.existsSync(path.resolve(__siteRoot + _req.path + ".html"))) {
+        return res.sendFile(path.resolve(__siteRoot + _req.path + ".html"))
+    }
 
     return;
 })
@@ -168,7 +166,7 @@ function processCut(cutType: "image" | "iframe", req: express.Request, res:expre
     console.log("imageCutInfos:",imageCutInfos)
 
 
-    const fileUrl = cutType == "iframe" ? "./public/iframe.html" : "./public/image.html"
+    const fileUrl = cutType == "iframe" ? "./public/site/iframe2.html" : "./public/site/image.html"
     let file = fs.readFileSync(fileUrl,"utf-8")
 
     let dict: {

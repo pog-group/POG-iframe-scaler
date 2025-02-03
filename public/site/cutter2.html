@@ -1,0 +1,239 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+
+body, html {
+    margin: 0;
+    overflow: hidden;
+}
+
+:root {
+    --matrix-x: 4;
+    --matrix-y: 4;
+    --size-x: 1920px;
+    --size-y: 1080px;
+    --selected-x: 0;
+    --selected-y: 0;
+}
+
+
+/* 1080 -> 1080/4 + 1080/(4*2) */
+
+
+#box {
+    margin: 0px;
+    background-color: #FF000099;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+#vid {
+    margin:0px;
+}
+
+
+
+
+m.x
+m.y
+s.x
+s.y
+
+
+/*
+1: 720px, 405px | (s.x / m.x) + (s.x / (m.x * 2))          (s.y / m.y) + (s.y / (m.y * 2))
+2: 240px, 405px
+3: -240px, 405px
+3: -720px, 405px
+
+
+
+*/
+</style>
+
+</head>
+
+<body>
+
+    <div id="box">
+        <!-- <iframe class="vid" src="https://vdo.ninja/?view=2zr28yq&solo&room=aaaerg" allow="autoplay;"></iframe> -->
+        <img id="vid" src="/assets/image_4x4.png">
+    </div>
+
+    
+</body>
+
+<script>
+
+
+
+const Datas = {
+    "matrix-x":     4,
+    "matrix-y":     4,
+    "size-x":   1920,
+    "size-y":   1080,
+    "selected-x":   0,
+    "selected-y":   0,
+}
+
+function getCoords(width, height, num) {
+    if (num < 0 || num >= width * height) {
+        throw new Error("Number is out of bounds for the given matrix size");
+    }
+    
+    const x = num % width;
+    const y = Math.floor(num / width);
+    return [x, y];
+}
+
+const box = document.getElementById("box")
+const vid = document.getElementById("vid")
+
+setInterval(() => {
+
+    //let value = `scale(${window.innerWidth / 1920 * 4}) translate(calc(calc(calc(100vw / var(--matrix-x)) + calc(100vw / calc(var(--matrix-x) * 2))) - 0px), calc(405px - 0px))`
+    let scale = window.innerWidth / 1920 * 4
+
+    let boxvalue = `scale(${scale}) translate(0px, 0px)`
+    box.style.transform = boxvalue
+    console.log("updated to:", boxvalue)
+
+
+
+    let imageCenter = [
+        (Datas["size-x"]) / 2,
+        (Datas["size-y"]) / 2,
+    ]
+    let num1_center = [
+        (window.innerWidth / (Datas["matrix-x"] * 2))   + ( (innerWidth / (Datas["matrix-x"])) * Datas["selected-x"] ),
+        (window.innerHeight / (Datas["matrix-y"] * 2))  + ( (innerHeight / (Datas["matrix-y"])) * Datas["selected-y"] ),
+    ]
+
+
+    let largeur = (Datas["size-x"])
+    let hauteur = (Datas["size-y"])
+
+
+    let largeur_unit = largeur / Datas["matrix-x"]
+    let hauteur_unit = hauteur / Datas["matrix-y"]
+
+    console.log("largeur:",largeur)
+    console.log("hauteur:",hauteur)
+    console.log("largeur_unit:",largeur_unit)
+    console.log("hauteur_unit:",hauteur_unit)
+
+    let test = [
+        (largeur/8) *3,
+        (hauteur/8) *3,
+    ]
+
+    let test2 = [
+        test[0] - largeur_unit * Datas["selected-x"],
+        test[1] - hauteur_unit * Datas["selected-y"],
+    ]
+    
+
+    console.log("ImageCenter:",imageCenter)
+    console.log("num1_center:",num1_center)
+    
+    vid.style.transform = `translate(${test2[0]}px, ${test2[1]}px)`
+
+
+}, 1000)
+
+
+/*
+
+
+
+
+setInterval(() => {
+
+    //let value = `scale(${window.innerWidth / 1920 * 4}) translate(calc(calc(calc(100vw / var(--matrix-x)) + calc(100vw / calc(var(--matrix-x) * 2))) - 0px), calc(405px - 0px))`
+    let scale = window.innerWidth / 1920 * 4
+
+    let boxvalue = `scale(${scale}) translate(0px, 0px)`
+    box.style.transform = boxvalue
+    console.log("updated to:", boxvalue)
+
+
+
+    let imageCenter = [
+        (window.innerWidth * scale) / 2,
+        (window.innerHeight * scale) / 2,
+    ]
+    let num1_center = [
+        (window.innerWidth / (Datas["matrix-x"] * 2))   + ( (innerWidth / (Datas["matrix-x"])) * Datas["selected-x"] ),
+        (window.innerHeight / (Datas["matrix-y"] * 2))  + ( (innerHeight / (Datas["matrix-y"])) * Datas["selected-y"] ),
+    ]
+
+
+
+
+
+
+
+
+
+    console.log("ImageCenter:",imageCenter)
+    console.log("num1_center:",num1_center)
+    
+    vid.style.transform = `translate(${imageCenter[0]}px, ${imageCenter[1]}px)`
+
+
+}, 1000)
+
+*/
+
+
+
+/*
+translate(calc(calc(1920 / 4) + calc(1920 / 8))), 0px)`
+
+
+1440 /4 + 1440 /8
+
+1920                720            720         0px   0px
+1440  ->  translate 540     total: 480        60px   45px 
+1080 ->             405            300        105px 105px
+960                 360                       117px    129px
+720 ->              270            152        118px  130px
+
+
+1440x810 -> 450px 3
+
+1920x1080 -> 405px 4
+1920x810 -> 405px 4
+1920x540 -> 405px 4
+1920x270 -> 405px 4
+
+
+1080x1080 -> 300px 2.25
+1080x810 -> 300px 2.25
+
+810x810 -> 220px 1.6875
+
+540x810 -> 60px  1.125
+
+=================
+
+
+1920x1080  410px
+1800  396px
+
+*/
+
+</script>
+
+</html>
