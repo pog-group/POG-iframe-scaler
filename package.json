@@ -1,0 +1,33 @@
+{
+  "name": "pog-iframe-scaler",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node ./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pog-group/POG-iframe-scaler.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pog-group/POG-iframe-scaler/issues"
+  },
+  "homepage": "https://github.com/pog-group/POG-iframe-scaler#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "somefunctions": "^5.0.1",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
+  }
+}

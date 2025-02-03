@@ -1,0 +1,52 @@
+<html>
+
+<head>
+
+<style>
+
+body, html {
+    margin: 0;
+}
+
+:root {
+    --x: {{matrix.width}};
+    --y: {{matrix.height}};
+    --size-x: {{inputSize.x}}px;
+    --size-y: {{inputSize.y}}px;
+    --selected-x: 1;
+    --selected-y: 1;
+}
+
+.box {
+    width: calc(var(--size-x) / var(--x));
+    height: calc(var(--size-y) / var(--y));
+    overflow: hidden;
+}
+
+.vid {
+    width: var(--size-x);
+    height: var(--size-y);
+    transform: translate(calc( calc(-100% / {{matrix.width}}) * {{matrix.x}} ), calc( calc(-100% / {{matrix.height}}) * {{matrix.y}} ));
+
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <div class="box">
+        <!-- <iframe class="vid" src="https://vdo.ninja/?view=2zr28yq&solo&room=aaaerg" allow="autoplay;"></iframe> -->
+        <img class="vid" src="{{source.url}}">
+    </div>
+
+    
+</body>
+
+<script>
+
+</script>
+
+</html>
