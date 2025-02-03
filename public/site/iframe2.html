@@ -37,6 +37,7 @@ body, html {
 
 }
 #vid {
+    position: fixed;
     margin:0px;
     width: var(--size-x);
     height: var(--size-y);
@@ -101,7 +102,7 @@ function fixSize() {
     } else {
         scale = (window.innerWidth) / Datas["size-x"] * Datas["matrix-x"]
     }
-
+    
 
 
     let boxvalue = `scale(${scale}) translate(0px, 0px)`
