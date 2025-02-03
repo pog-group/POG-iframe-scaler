@@ -29,6 +29,7 @@ app.use(express.json());
 
 // Basic route
 app.get('/', (_req: express.Request, res: express.Response): any => {
+    console.log("_req:",_req)
     console.log(`[server] ${_req.method} ${_req.path}`)
 
     res.send('Home page')

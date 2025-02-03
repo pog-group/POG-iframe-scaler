@@ -12,8 +12,8 @@ body, html {
 :root {
     --x: {{matrix.width}};
     --y: {{matrix.height}};
-    --size-x: {{inputSize.x}}px;
-    --size-y: {{inputSize.y}}px;
+    /* --size-x: {{inputSize.x}}px; In javascript */
+    /* --size-y: {{inputSize.y}}px; In javascript */
     --selected-x: {{matrix.x}};
     --selected-y: {{matrix.y}};
 }
@@ -39,8 +39,6 @@ body, html {
 #vid {
     position: fixed;
     margin:0px;
-    width: var(--size-x);
-    height: var(--size-y);
 }
 
 
@@ -78,6 +76,15 @@ const Datas = {
     "size-y":     {{inputSize.y}},
     "selected-x": {{matrix.x}},
     "selected-y": {{matrix.y}},
+    "hashparam-selected-x": null, // for override
+    "hashparam-selected-y": null, // for override
+}
+
+function getSelected_X() {
+    return Datas["hashparam-selected-x"] ?? Datas["selected-x"]
+}
+function getSelected_Y() {
+    return Datas["hashparam-selected-y"] ?? Datas["selected-y"]
 }
 
 function getCoords(width, height, num) {
@@ -116,8 +123,8 @@ function fixSize() {
         (Datas["size-y"]) / 2,
     ]
     let num1_center = [
-        (window.innerWidth / (Datas["matrix-x"] * 2))   + ( (innerWidth / (Datas["matrix-x"])) * Datas["selected-x"] ),
-        (window.innerHeight / (Datas["matrix-y"] * 2))  + ( (innerHeight / (Datas["matrix-y"])) * Datas["selected-y"] ),
+        (window.innerWidth / (Datas["matrix-x"] * 2))   + ( (innerWidth / (Datas["matrix-x"])) * getSelected_X() ),
+        (window.innerHeight / (Datas["matrix-y"] * 2))  + ( (innerHeight / (Datas["matrix-y"])) * getSelected_Y() ),
     ]
 
 
@@ -145,8 +152,8 @@ function fixSize() {
 */
 
     let test2 = [
-        test[0] - largeur_unit * Datas["selected-x"],
-        test[1] - hauteur_unit * Datas["selected-y"],
+        test[0] - largeur_unit * getSelected_X(),
+        test[1] - hauteur_unit * getSelected_Y(),
     ]
     
 
@@ -154,6 +161,8 @@ function fixSize() {
     console.log("num1_center:",num1_center)
     
     vid.style.transform = `translate(${test2[0]}px, ${test2[1]}px)`
+    vid.style.width = `${Datas["size-x"]}`
+    vid.style.height = `${Datas["size-y"]}`
 
 }
 
@@ -167,6 +176,68 @@ if(typeof _IMPORTED_PARAMS_.resizeDelay == 'number' && _IMPORTED_PARAMS_.resizeD
     }, _IMPORTED_PARAMS_.resizeDelay)
 }
 
+function getCoords(matrixWidth, matrixHeight, num) {
+   if (num < 0 || num >= matrixWidth * matrixHeight) {
+       throw new Error("Number is out of bounds for the given matrix size");
+   }
+   
+   const x = num % matrixWidth;
+   const y = Math.floor(num / matrixWidth);
+   return [x, y];
+}
+
+
+let HASH_PARAMS = {}
+
+function getHashParams() {
+    var hash = window.location.hash.substr(1);
+
+    var result = hash.split('&').reduce(function (res, item) {
+        var parts = item.split('=');
+        res[parts[0]] = parts[1];
+        return res;
+    }, {});
+    return result
+}
+
+
+setInterval(() => {
+    let newHashParams = getHashParams()
+    console.log("old:",HASH_PARAMS)
+    console.log("new:",newHashParams)
+    if(JSON.stringify(HASH_PARAMS) !== JSON.stringify(newHashParams)) {
+        HASH_PARAMS = newHashParams
+        onHashChange()
+    }
+}, 50)
+
+
+
+
+function onHashChange() {
+    console.log("HASH CHANGED")
+    
+    if(Object.hasOwn(HASH_PARAMS, "zone") && (/^(\d+)$/).test(HASH_PARAMS["zone"]) == true) {
+
+
+        let coords;
+        try {
+            coords = getCoords(Datas["matrix-x"], Datas["matrix-y"], parseInt(HASH_PARAMS.zone))
+        } catch(err) {
+            console.error(err)
+            coords = [0,0]
+        }
+
+
+        console.log("coords:",coords)
+        Datas["hashparam-selected-x"] = coords[0] ?? null
+        Datas["hashparam-selected-y"] = coords[1] ?? null
+    } else {
+        Datas["hashparam-selected-x"] = null
+        Datas["hashparam-selected-y"] = null
+    }
+    fixSize()
+}
 
 
 </script>
