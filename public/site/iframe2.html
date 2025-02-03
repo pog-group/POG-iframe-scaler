@@ -209,7 +209,7 @@ setInterval(() => {
         HASH_PARAMS = newHashParams
         onHashChange()
     }
-}, 50)
+}, 500)
 
 
 
@@ -239,6 +239,10 @@ function onHashChange() {
     fixSize()
 }
 
+
+window.addEventListener("load", () => {
+    console.log(`[iframe cutter] Loaded page.`)
+})
 
 </script>
 
